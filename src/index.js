@@ -180,13 +180,23 @@ function fecharFormPreco() {
 }
 
 async function deletarPreco(id) {
+  try {
   await axios.delete(apiUrl + "/Preco/" + id);
+  } catch (error) {
+    if (error.response?.status === 404) alert(error.response.data);
+    else console.error(error);
+  }
 
   receberPrecoTodos();
 }
 
 async function deletarVeiculo(id) {
+  try {
   await axios.delete(apiUrl + "/Veiculo/" + id);
+  } catch (error) {
+    if (error.response?.status === 404) alert(error.response.data);
+    else console.error(error);
+  }
 
   receberCarros();
 }
@@ -199,7 +209,12 @@ async function putVeiculo(formEl) {
   }
   if (formEl.dataSaida) form.dataSaida = new Date(formEl.dataSaida.value + "T" + formEl.horaSaida.value);
 
+  try {
   await axios.put(apiUrl + "/Veiculo/" + form.id, form);
+  } catch (error) {
+    if (error.response?.status === 404) alert(error.response.data);
+    else console.error(error);
+  }
 
   esconderOverlay();
   receberCarros();
@@ -257,7 +272,12 @@ async function postEntradaVeiculo(formEl) {
     dataEntrada: new Date(formEl.dataEntrada.value + "T" + formEl.horaEntrada.value)
   }
 
+  try {
   await axios.post(apiUrl + "/Veiculo/entrada", form);
+  } catch (error) {
+    if (error.response?.status === 404) alert(error.response.data);
+    else console.error(error);
+  }
 
   esconderOverlay();
   receberCarros();
@@ -298,15 +318,26 @@ async function precoFormSubmit(e) {
   receberPrecoTodos();
 }
 
-function postPreco(form) {
-  return axios.post(apiUrl + "/Preco", form);
+async function postPreco(form) {
+  try {
+    return await axios.post(apiUrl + "/Preco", form);
+  } catch (error) {
+    if (error.response?.status === 404) alert(error.response.data);
+    else console.error(error);
+  }
 }
 
-function putPreco(form) {
-  return axios.put(apiUrl + "/Preco/" + form.id, form)
+async function putPreco(form) {
+  try {
+    return await axios.put(apiUrl + "/Preco/" + form.id, form)
+  } catch (error) {
+    if (error.response?.status === 404) alert(error.response.data);
+    else console.error(error);
+  }
 }
 
 function receberPrecoTodos() {
+  try {
   axios.get(apiUrl + "/Preco/Todos").then(resp => {
     const tabelaPrecoTodosBody = document.querySelector(".overlay-preco-tabela tbody");
 
@@ -339,13 +370,18 @@ function receberPrecoTodos() {
       botaoDeletar.name = "trash-sharp";
       botaoDeletar.addEventListener("click", () => deletarPreco(p.id));
       celulaAcoes.appendChild(botaoDeletar);
-    });
-  });
+      })
+    })
+  } catch (error) {
+    if (error.response?.status === 404) alert(error.response.data);
+    else console.error(error);
+  }
 
   receberPrecoAtual();
 }
 
 function receberPrecoAtual() {
+  try {
   axios.get(apiUrl + "/Preco").then(resp => {
     const tabelaPrecoBody = document.querySelector(".preco-tabela tbody");
 
@@ -365,6 +401,10 @@ function receberPrecoAtual() {
       mostrarFormPrecoNovo();
     }
   })
+  } catch (error) {
+    if (error.response?.status === 404) alert(error.response.data);
+    else console.error(error);
+  }
 }
 
 function formatarIntParaValorTabela(valor) {
@@ -373,6 +413,7 @@ function formatarIntParaValorTabela(valor) {
 
 
 function receberCarros() {
+  try {
   axios.get(apiUrl + "/Veiculo/todos").then(resp => {
     const tabelaVeiculosBody = document.querySelector(".veiculo-tabela tbody");
 
@@ -425,6 +466,10 @@ function receberCarros() {
       celulaAcoes.appendChild(botaoDeletar);
     });
   });
+  } catch (error) {
+    if (error.response?.status === 404) alert(error.response.data);
+    else console.error(error);
+  }
 }
 
 function formatarDataForm(data) {
