@@ -1,6 +1,23 @@
 export const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sabado"];
 export const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
+export let timers = []
+
+export function definirAtualizacaoTimer() {
+  setInterval(() => timers.forEach(t =>
+    t.elemento.textContent = horasEntreDatas(t.dataInicial, new Date())), 1000);
+}
+
+export function definirAtualizacaoHorario() {
+  const mostrador = document.querySelector("#relogio");
+
+  if (mostrador) {
+    mostrador.textContent = textoRelogio();
+
+    setInterval(() => mostrador.textContent = textoRelogio(), 1000);
+  }
+}
+
 export function textoRelogio() {
   const data = new Date();
 

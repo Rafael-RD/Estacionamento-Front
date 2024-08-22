@@ -33,13 +33,15 @@ export function receberCarros() {
       });
 
       tabelaVeiculosBody.innerHTML = "";
+      utils.timers = [];
 
       veiculos.forEach(v => {
         const row = tabelaVeiculosBody.insertRow();
         row.insertCell().textContent = v.placa.toUpperCase();
         row.insertCell().textContent = utils.formatarDataTabela(v.dataEntrada);
         row.insertCell().textContent = v.dataSaida ? utils.formatarDataTabela(v.dataSaida) : "-";
-        row.insertCell().textContent = v.tempo ? v.tempo : "-";
+        const timer = row.insertCell();
+        timer.textContent = v.tempo ? v.tempo : "-";
         const celulaAcoes = row.insertCell();
 
         const botaoEditar = document.createElement("ion-icon");
@@ -51,6 +53,12 @@ export function receberCarros() {
         botaoDeletar.name = "trash-sharp";
         botaoDeletar.addEventListener("click", () => deletarVeiculo(v.id));
         celulaAcoes.appendChild(botaoDeletar);
+
+        if (!v.dataSaida)
+          utils.timers.push({
+            dataInicial: v.dataEntrada,
+            elemento: timer
+          });
       });
     });
   } catch (error) {
