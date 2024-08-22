@@ -2,28 +2,13 @@ const apiUrl = "https://localhost:7217";
 
 const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sabado"];
 
-const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
 let precos = [];
 
-let veiculos = [
-  {
-    "id": 1,
-    "placa": "abc5h12",
-    "dataEntrada": "2024-08-19T05:56:28.849",
-    "dataSaida": "2024-08-20T06:29:54.726",
-    "tempo": "24:33:25"
-  },
-  {
-    "id": 2,
-    "placa": "ahe3h67",
-    "dataEntrada": "2024-08-21T03:29:42.787",
-    "dataSaida": null,
-    "tempo": "14:33:37"
-  }
-]
+let veiculos = [];
 
-let precoAtual = {}
+let precoAtual = {};
 
 function esconderOverlay() {
   const overlay = document.querySelector(".overlay");
@@ -185,7 +170,7 @@ function fecharFormPreco() {
 
 async function deletarPreco(id) {
   try {
-  await axios.delete(apiUrl + "/Preco/" + id);
+    await axios.delete(apiUrl + "/Preco/" + id);
   } catch (error) {
     if (error.response?.status === 404) alert(error.response.data);
     else console.error(error);
@@ -196,7 +181,7 @@ async function deletarPreco(id) {
 
 async function deletarVeiculo(id) {
   try {
-  await axios.delete(apiUrl + "/Veiculo/" + id);
+    await axios.delete(apiUrl + "/Veiculo/" + id);
   } catch (error) {
     if (error.response?.status === 404) alert(error.response.data);
     else console.error(error);
@@ -214,7 +199,7 @@ async function putVeiculo(formEl) {
   if (formEl.dataSaida) form.dataSaida = new Date(formEl.dataSaida.value + "T" + formEl.horaSaida.value);
 
   try {
-  await axios.put(apiUrl + "/Veiculo/" + form.id, form);
+    await axios.put(apiUrl + "/Veiculo/" + form.id, form);
   } catch (error) {
     if (error.response?.status === 404) alert(error.response.data);
     else console.error(error);
@@ -232,8 +217,6 @@ async function postSaidaVeiculo(formEl) {
 
   try {
     const resp = await axios.post(apiUrl + "/Veiculo/saida", form);
-    console.log(resp);
-
     const veiculoSaida = {
       placa: resp.data.placa,
       dataEntrada: stringParaData(resp.data.dataEntrada),
@@ -263,10 +246,8 @@ async function postSaidaVeiculo(formEl) {
 
     tabelaAPagar.classList.remove("escondido");
   } catch (error) {
-    console.log(error);
-
     if (error.response.status === 400) alert(error.response.data);
-    else console.log(error);
+    else console.error(error);
   }
 }
 
@@ -277,7 +258,7 @@ async function postEntradaVeiculo(formEl) {
   }
 
   try {
-  await axios.post(apiUrl + "/Veiculo/entrada", form);
+    await axios.post(apiUrl + "/Veiculo/entrada", form);
   } catch (error) {
     if (error.response?.status === 404) alert(error.response.data);
     else console.error(error);
@@ -342,38 +323,38 @@ async function putPreco(form) {
 
 function receberPrecoTodos() {
   try {
-  axios.get(apiUrl + "/Preco/Todos").then(resp => {
-    const tabelaPrecoTodosBody = document.querySelector(".overlay-preco-tabela tbody");
+    axios.get(apiUrl + "/Preco/Todos").then(resp => {
+      const tabelaPrecoTodosBody = document.querySelector(".overlay-preco-tabela tbody");
 
-    precos = resp.data.map(p => {
-      return {
-        id: p.id,
-        precoFixo: formatarIntParaValorTabela(p.precoFixo),
-        precoHora: formatarIntParaValorTabela(p.precoHora),
-        periodoInicio: stringParaData(p.periodoInicio),
-        periodoFinal: stringParaData(p.periodoFinal)
-      }
-    });
+      precos = resp.data.map(p => {
+        return {
+          id: p.id,
+          precoFixo: formatarIntParaValorTabela(p.precoFixo),
+          precoHora: formatarIntParaValorTabela(p.precoHora),
+          periodoInicio: stringParaData(p.periodoInicio),
+          periodoFinal: stringParaData(p.periodoFinal)
+        }
+      });
 
-    tabelaPrecoTodosBody.innerHTML = "";
+      tabelaPrecoTodosBody.innerHTML = "";
 
-    precos.forEach(p => {
-      const row = tabelaPrecoTodosBody.insertRow();
-      row.insertCell().textContent = p.precoFixo;
-      row.insertCell().textContent = p.precoHora;
-      row.insertCell().textContent = formatarDataTabela(p.periodoInicio);
-      row.insertCell().textContent = formatarDataTabela(p.periodoFinal);
-      const celulaAcoes = row.insertCell();
+      precos.forEach(p => {
+        const row = tabelaPrecoTodosBody.insertRow();
+        row.insertCell().textContent = p.precoFixo;
+        row.insertCell().textContent = p.precoHora;
+        row.insertCell().textContent = formatarDataTabela(p.periodoInicio);
+        row.insertCell().textContent = formatarDataTabela(p.periodoFinal);
+        const celulaAcoes = row.insertCell();
 
-      const botaoEditar = document.createElement("ion-icon");
-      botaoEditar.name = "create-sharp";
-      botaoEditar.addEventListener("click", () => mostrarFormPrecoEditar(p.id));
-      celulaAcoes.appendChild(botaoEditar);
+        const botaoEditar = document.createElement("ion-icon");
+        botaoEditar.name = "create-sharp";
+        botaoEditar.addEventListener("click", () => mostrarFormPrecoEditar(p.id));
+        celulaAcoes.appendChild(botaoEditar);
 
-      const botaoDeletar = document.createElement("ion-icon");
-      botaoDeletar.name = "trash-sharp";
-      botaoDeletar.addEventListener("click", () => deletarPreco(p.id));
-      celulaAcoes.appendChild(botaoDeletar);
+        const botaoDeletar = document.createElement("ion-icon");
+        botaoDeletar.name = "trash-sharp";
+        botaoDeletar.addEventListener("click", () => deletarPreco(p.id));
+        celulaAcoes.appendChild(botaoDeletar);
       })
     })
   } catch (error) {
@@ -386,25 +367,25 @@ function receberPrecoTodos() {
 
 function receberPrecoAtual() {
   try {
-  axios.get(apiUrl + "/Preco").then(resp => {
-    const tabelaPrecoBody = document.querySelector(".preco-tabela tbody");
+    axios.get(apiUrl + "/Preco").then(resp => {
+      const tabelaPrecoBody = document.querySelector(".preco-tabela tbody");
 
-    const precos = {
-      precoFixo: formatarIntParaValorTabela(resp.data.precoFixo),
-      precoHora: formatarIntParaValorTabela(resp.data.precoHora)
-    }
+      const precos = {
+        precoFixo: formatarIntParaValorTabela(resp.data.precoFixo),
+        precoHora: formatarIntParaValorTabela(resp.data.precoHora)
+      }
 
-    tabelaPrecoBody.deleteRow(-1)
+      tabelaPrecoBody.deleteRow(-1)
 
-    const row = tabelaPrecoBody.insertRow();
-    row.insertCell().textContent = precos.precoFixo;
-    row.insertCell().textContent = precos.precoHora;
-  }).catch(resp => {
-    if (resp.response.status === 404) {
-      mostrarOverlayPrecos();
-      mostrarFormPrecoNovo();
-    }
-  })
+      const row = tabelaPrecoBody.insertRow();
+      row.insertCell().textContent = precos.precoFixo;
+      row.insertCell().textContent = precos.precoHora;
+    }).catch(resp => {
+      if (resp.response.status === 404) {
+        mostrarOverlayPrecos();
+        mostrarFormPrecoNovo();
+      }
+    })
   } catch (error) {
     if (error.response?.status === 404) alert(error.response.data);
     else console.error(error);
@@ -418,58 +399,58 @@ function formatarIntParaValorTabela(valor) {
 
 function receberCarros() {
   try {
-  axios.get(apiUrl + "/Veiculo/todos").then(resp => {
-    const tabelaVeiculosBody = document.querySelector(".veiculo-tabela tbody");
+    axios.get(apiUrl + "/Veiculo/todos").then(resp => {
+      const tabelaVeiculosBody = document.querySelector(".veiculo-tabela tbody");
 
-    veiculos = resp.data.map(v => {
-      let difTempoSegundos;
+      veiculos = resp.data.map(v => {
+        let difTempoSegundos;
 
-      const veiculo = {
-        id: v.id,
-        placa: v.placa,
-        dataEntrada: stringParaData(v.dataEntrada),
-        dataSaida: stringParaData(v.dataSaida),
-      }
+        const veiculo = {
+          id: v.id,
+          placa: v.placa,
+          dataEntrada: stringParaData(v.dataEntrada),
+          dataSaida: stringParaData(v.dataSaida),
+        }
 
-      if (veiculo.dataSaida)
-        difTempoSegundos = Math.floor((veiculo.dataSaida.getTime() - veiculo.dataEntrada.getTime()) / 1000);
-      else {
-        difTempoSegundos = Math.floor((new Date().getTime() - veiculo.dataEntrada.getTime()) / 1000);
-      }
+        if (veiculo.dataSaida)
+          difTempoSegundos = Math.floor((veiculo.dataSaida.getTime() - veiculo.dataEntrada.getTime()) / 1000);
+        else {
+          difTempoSegundos = Math.floor((new Date().getTime() - veiculo.dataEntrada.getTime()) / 1000);
+        }
 
-      veiculo.tempo = (
-        Math.floor(difTempoSegundos / 3600) + ":" +
-        Math.floor((difTempoSegundos / 60) % 60).toString().padStart(2, 0) + ":" +
-        Math.floor(difTempoSegundos % 60).toString().padStart(2, 0)
-      );
+        veiculo.tempo = (
+          Math.floor(difTempoSegundos / 3600) + ":" +
+          Math.floor((difTempoSegundos / 60) % 60).toString().padStart(2, 0) + ":" +
+          Math.floor(difTempoSegundos % 60).toString().padStart(2, 0)
+        );
 
-      return veiculo;
+        return veiculo;
+      });
+
+      tabelaVeiculosBody.innerHTML = "";
+
+      const tab = document.createElement("table")
+      const tbd = tab.createTBody()
+
+      veiculos.forEach(v => {
+        const row = tabelaVeiculosBody.insertRow();
+        row.insertCell().textContent = v.placa.toUpperCase();
+        row.insertCell().textContent = formatarDataTabela(v.dataEntrada);
+        row.insertCell().textContent = v.dataSaida ? formatarDataTabela(v.dataSaida) : "-";
+        row.insertCell().textContent = v.tempo ? v.tempo : "-";
+        const celulaAcoes = row.insertCell();
+
+        const botaoEditar = document.createElement("ion-icon");
+        botaoEditar.name = "create-sharp";
+        botaoEditar.addEventListener("click", () => mostrarFormVeiculoEdicao(v.id));
+        celulaAcoes.appendChild(botaoEditar);
+
+        const botaoDeletar = document.createElement("ion-icon");
+        botaoDeletar.name = "trash-sharp";
+        botaoDeletar.addEventListener("click", () => deletarVeiculo(v.id));
+        celulaAcoes.appendChild(botaoDeletar);
+      });
     });
-
-    tabelaVeiculosBody.innerHTML = "";
-
-    const tab = document.createElement("table")
-    const tbd = tab.createTBody()
-
-    veiculos.forEach(v => {
-      const row = tabelaVeiculosBody.insertRow();
-      row.insertCell().textContent = v.placa.toUpperCase();
-      row.insertCell().textContent = formatarDataTabela(v.dataEntrada);
-      row.insertCell().textContent = v.dataSaida ? formatarDataTabela(v.dataSaida) : "-";
-      row.insertCell().textContent = v.tempo ? v.tempo : "-";
-      const celulaAcoes = row.insertCell();
-
-      const botaoEditar = document.createElement("ion-icon");
-      botaoEditar.name = "create-sharp";
-      botaoEditar.addEventListener("click", () => mostrarFormVeiculoEdicao(v.id));
-      celulaAcoes.appendChild(botaoEditar);
-
-      const botaoDeletar = document.createElement("ion-icon");
-      botaoDeletar.name = "trash-sharp";
-      botaoDeletar.addEventListener("click", () => deletarVeiculo(v.id));
-      celulaAcoes.appendChild(botaoDeletar);
-    });
-  });
   } catch (error) {
     if (error.response?.status === 404) alert(error.response.data);
     else console.error(error);
