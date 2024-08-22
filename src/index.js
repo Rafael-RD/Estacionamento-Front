@@ -1,44 +1,14 @@
 import { precoService, veiculoService, utils } from "./services/index.js";
 
-function esconderOverlay() {
-  const overlay = document.querySelector(".overlay");
-  overlay.classList.add("escondido");
-  const precoContainer = overlay.querySelector(".overlay-preco-container");
-  precoContainer.classList.add("escondido");
-  const veiculoContainer = overlay.querySelector(".overlay-veiculo-container");
-  veiculoContainer.classList.add("escondido");
-  const pagarTabela = document.querySelector(".pagar-tabela");
-  pagarTabela.classList.add("escondido");
-  fecharFormPreco();
-}
-
-function definirAtualizacaoHorario() {
-  const mostrador = document.querySelector("#relogio");
-
-  if (mostrador) {
-    mostrador.textContent = utils.textoRelogio();
-
-    setInterval(() => mostrador.textContent = utils.textoRelogio(), 1000);
-  }
-}
-
-function adicionarEventListeners() {
-  document.querySelector(".overlay").addEventListener("click", esconderOverlay);
-  document.querySelectorAll(".overlay div").forEach(e => e.addEventListener("click", e => e.stopPropagation()));
-  document.querySelector("#form-veiculo #cancelar").addEventListener("click", esconderOverlay);
-
-  precoService.adicionarEventListeners();
-  veiculoService.adicionarEventListeners();
-
-  document.querySelector("#form-veiculo label").addEventListener("click", testPlaca);
-}
-
 function iniciar() {
   definirAtualizacaoHorario();
+  definirAtualizacaoTimer();
   receberCarros();
   receberPrecoAtual();
   receberPrecoTodos();
   adicionarEventListeners();
+
+  document.querySelector("#form-veiculo label").addEventListener("click", testPlaca);
 }
 
 iniciar();
@@ -64,6 +34,17 @@ function fecharFormPreco() {
 
 
 
+function definirAtualizacaoTimer() {
+  utils.definirAtualizacaoTimer();
+}
+
+function definirAtualizacaoHorario() {
+  utils.definirAtualizacaoHorario();
+}
+
+function adicionarEventListeners() {
+  utils.adicionarEventListeners();
+}
 
 
 

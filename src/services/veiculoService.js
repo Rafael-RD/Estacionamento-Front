@@ -80,7 +80,7 @@ export async function postEntradaVeiculo(formEl) {
     else console.error(error);
   }
 
-  esconderOverlay();
+  utils.esconderOverlay();
   receberCarros();
 }
 
@@ -135,7 +135,7 @@ export async function putVeiculo(formEl) {
     else console.error(error);
   }
 
-  esconderOverlay();
+  utils.esconderOverlay();
   receberCarros();
 }
 
@@ -259,4 +259,5 @@ export async function veiculoFormSubmit(e) {
       await putVeiculo(e.target);
       break;
   }
+  receberCarros();
 }

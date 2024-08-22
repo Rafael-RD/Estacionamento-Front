@@ -1,3 +1,6 @@
+import { precoService, veiculoService } from "./index.js";
+
+
 export const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sabado"];
 export const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
@@ -78,4 +81,25 @@ function localizarData(data) {
 
 export function formatarIntParaValorTabela(valor) {
   return (valor / 100).toFixed(2).replace(".", ",");
+}
+
+export function esconderOverlay() {
+  const overlay = document.querySelector(".overlay");
+  overlay.classList.add("escondido");
+  const precoContainer = overlay.querySelector(".overlay-preco-container");
+  precoContainer.classList.add("escondido");
+  const veiculoContainer = overlay.querySelector(".overlay-veiculo-container");
+  veiculoContainer.classList.add("escondido");
+  const pagarTabela = document.querySelector(".pagar-tabela");
+  pagarTabela.classList.add("escondido");
+  precoService.fecharFormPreco();
+}
+
+export function adicionarEventListeners() {
+  document.querySelector(".overlay").addEventListener("click", esconderOverlay);
+  document.querySelectorAll(".overlay div").forEach(e => e.addEventListener("click", e => e.stopPropagation()));
+  document.querySelector("#form-veiculo #cancelar").addEventListener("click", esconderOverlay);
+
+  precoService.adicionarEventListeners();
+  veiculoService.adicionarEventListeners();
 }
