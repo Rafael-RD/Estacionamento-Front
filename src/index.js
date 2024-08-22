@@ -292,10 +292,18 @@ async function precoFormSubmit(e) {
     periodoFinal: new Date(e.target.dataFinal.value + "T" + e.target.horaFinal.value),
   }
 
-  if (form.id === 0) await axios.post(apiUrl + "/Preco", form);
-  else await axios.put(apiUrl + "/Preco/" + form.id, form);
+  if (form.id === 0) await postPreco(form);
+  else await putPreco(form);
 
   receberPrecoTodos();
+}
+
+function postPreco(form) {
+  return axios.post(apiUrl + "/Preco", form);
+}
+
+function putPreco(form) {
+  return axios.put(apiUrl + "/Preco/" + form.id, form)
 }
 
 function receberPrecoTodos() {
