@@ -293,7 +293,7 @@ async function precoFormSubmit(e) {
   }
 
   if (form.id === 0) await axios.post(apiUrl + "/Preco", form);
-  else await axios.put(apiUrl + "/Proco/" + form.id, form);
+  else await axios.put(apiUrl + "/Preco/" + form.id, form);
 
   receberPrecoTodos();
 }
