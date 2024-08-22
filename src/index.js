@@ -147,14 +147,18 @@ function mostrarFormPrecoEditar(id) {
 
   form.dataset.editando = preco.id;
 
+  form.precoFixo.value = preco.precoFixo;
+  form.precoHora.value = preco.precoHora;
 
+  [
+    form.dataInicio.value,
+    form.horaInicio.value
+  ] = formatarDataForm(preco.periodoInicio);
 
-  form.precoFixo.value = preco.precoFixo
-  form.precoHora.value = preco.precoHora
-  form.dataInicio.value = preco.periodoInicio.toLocaleString().split(",")[0].split("/").reverse().join("-"); ///////////////////////
-  form.horaInicio.value = preco.periodoInicio.toLocaleString().split(",")[1].trim();
-  form.dataFinal.value = preco.periodoFinal.toLocaleString().split(",")[0].split("/").reverse().join("-");
-  form.horaFinal.value = preco.periodoFinal.toLocaleString().split(",")[1].trim();
+  [
+    form.dataFinal.value,
+    form.horaFinal.value
+  ] = formatarDataForm(preco.periodoFinal);
 
   form.classList.remove("escondido");
 }
