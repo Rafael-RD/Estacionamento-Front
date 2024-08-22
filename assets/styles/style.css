@@ -1,0 +1,210 @@
+* {
+  box-sizing: border-box;
+}
+
+header {
+  padding: 8px;
+  background-color: aqua;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 90px;
+}
+
+header>div {
+  width: 20%;
+}
+
+.header-img {
+  height: 100%;
+}
+
+.header-img>img {
+  width: auto;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.titulo {
+  text-align: center;
+}
+
+.titulo>h1 {
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.titulo>h2 {
+  font-size: x-large;
+}
+
+.header-right {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.header-right>.preco-tabela {
+  width: 100%;
+  z-index: 5;
+}
+
+.header-right>.preco-tabela * {
+  border: 1px solid black;
+  padding: 2px;
+}
+
+.header-right>button {
+  height: 28px;
+  width: 80px;
+  font-size: 20px;
+  color: blue;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  gap: 15px;
+  width: 100%;
+}
+
+main>p {
+  font-size: larger;
+}
+
+.main-botoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.main-botoes>button {
+  height: 40px;
+  width: 100px;
+}
+
+.veiculo-tabela th,
+td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.66);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay>div {
+  padding: 20px;
+  background: rgb(235, 235, 235);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 9px;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, .25);
+}
+
+.overlay-preco-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.overlay button {
+  background-color: white;
+  outline: none;
+  border: none;
+  box-shadow: 0 0px 2px 0 black;
+  border-radius: 5px;
+  height: 25px;
+}
+
+.preco-form {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 5px;
+}
+
+form * {
+  text-align: center;
+}
+
+form label {
+  margin: auto;
+}
+
+form input[type='text'] {
+  grid-column: 2 / span 2;
+  text-transform: uppercase;
+}
+
+thead {
+  background-color: aqua;
+}
+
+tbody>tr:nth-child(odd) {
+  background-color: white;
+}
+
+tbody>tr:nth-child(even) {
+  background-color: gainsboro;
+}
+
+.overlay-preco-tabela th,
+td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+.overlay-veiculo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.veiculo-form {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 5px;
+}
+
+.pagar-tabela th,
+td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+ion-icon {
+  font-size: large;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+.escondido {
+  display: none !important;
+}
