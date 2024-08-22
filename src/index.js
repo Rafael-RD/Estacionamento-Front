@@ -233,20 +233,16 @@ async function postSaidaVeiculo(formEl) {
     const tabelaAPagar = document.querySelector(".pagar-tabela");
     const bodyTabela = tabelaAPagar.querySelector("tbody");
 
-    console.log(veiculoSaida)
+    bodyTabela.deleteRow(-1);
+    const row = bodyTabela.insertRow();
 
-    bodyTabela.innerHTML = `
-      <tr>
-        <td>${veiculoSaida.placa}</td>
-        <td>${formatarDataTabela(veiculoSaida.dataEntrada)}</td>
-        <td>${formatarDataTabela(veiculoSaida.dataSaida)}</td>
-        <td>${veiculoSaida.tempo}</td>
-        <td>${veiculoSaida.aPagar}</td>
-      </tr>
-    `;
+    row.insertCell().textContent = veiculoSaida.placa
+    row.insertCell().textContent = formatarDataTabela(veiculoSaida.dataEntrada)
+    row.insertCell().textContent = formatarDataTabela(veiculoSaida.dataSaida)
+    row.insertCell().textContent = veiculoSaida.tempo
+    row.insertCell().textContent = veiculoSaida.aPagar
 
     tabelaAPagar.classList.remove("escondido");
-
   } catch (error) {
     console.log(error);
 
@@ -318,18 +314,24 @@ function receberPrecoTodos() {
 
     tabelaPrecoTodosBody.innerHTML = "";
 
-    precos.forEach(p => tabelaPrecoTodosBody.innerHTML += `
-        <tr>
-          <td>R$ ${p.precoFixo}</td>
-          <td>R$ ${p.precoHora}</td>
-          <td>${formatarDataTabela(p.periodoInicio)}</td>
-          <td>${formatarDataTabela(p.periodoFinal)}</td>
-          <td>
-            <ion-icon name="create-sharp" onclick="mostrarFormPrecoEditar(${p.id})"></ion-icon>
-            <ion-icon name="trash-sharp" onclick="deletarPreco(${p.id})"></ion-icon>
-          </td>
-        </tr>
-      `);
+    precos.forEach(p => {
+      const row = tabelaPrecoTodosBody.insertRow();
+      row.insertCell().textContent = p.precoFixo;
+      row.insertCell().textContent = p.precoHora;
+      row.insertCell().textContent = formatarDataTabela(p.periodoInicio);
+      row.insertCell().textContent = formatarDataTabela(p.periodoFinal);
+      const celulaAcoes = row.insertCell();
+
+      const botaoEditar = document.createElement("ion-icon");
+      botaoEditar.name = "create-sharp";
+      botaoEditar.addEventListener("click", () => mostrarFormPrecoEditar(p.id));
+      celulaAcoes.appendChild(botaoEditar);
+
+      const botaoDeletar = document.createElement("ion-icon");
+      botaoDeletar.name = "trash-sharp";
+      botaoDeletar.addEventListener("click", () => deletarPreco(p.id));
+      celulaAcoes.appendChild(botaoDeletar);
+    });
   });
 
   receberPrecoAtual();
@@ -344,12 +346,11 @@ function receberPrecoAtual() {
       precoHora: formatarIntParaValorTabela(resp.data.precoHora)
     }
 
-    tabelaPrecoBody.innerHTML = `
-      <tr>
-        <td>${precos.precoFixo}</td>
-        <td>${precos.precoHora}</td>
-      </tr>
-    `;
+    tabelaPrecoBody.deleteRow(-1)
+
+    const row = tabelaPrecoBody.insertRow();
+    row.insertCell().textContent = precos.precoFixo;
+    row.insertCell().textContent = precos.precoHora;
   }).catch(resp => {
     if (resp.response.status === 404) {
       mostrarOverlayPrecos();
@@ -394,18 +395,27 @@ function receberCarros() {
 
     tabelaVeiculosBody.innerHTML = "";
 
-    veiculos.forEach(v => tabelaVeiculosBody.innerHTML += `
-      <tr>
-        <td>${v.placa.toUpperCase()}</td>
-        <td>${formatarDataTabela(v.dataEntrada)}</td>
-        <td>${v.dataSaida ? formatarDataTabela(v.dataSaida) : "-"}</td>
-        <td>${v.tempo ? v.tempo : "-"}</td>
-        <td>
-        <ion-icon name="create-sharp" onclick="mostrarFormVeiculoEdicao(${v.id})"></ion-icon>
-        <ion-icon name="trash-sharp" onclick="deletarVeiculo(${v.id})"></ion-icon>
-        </td>
-      </tr>
-      `);
+    const tab = document.createElement("table")
+    const tbd = tab.createTBody()
+
+    veiculos.forEach(v => {
+      const row = tabelaVeiculosBody.insertRow();
+      row.insertCell().textContent = v.placa.toUpperCase();
+      row.insertCell().textContent = formatarDataTabela(v.dataEntrada);
+      row.insertCell().textContent = v.dataSaida ? formatarDataTabela(v.dataSaida) : "-";
+      row.insertCell().textContent = v.tempo ? v.tempo : "-";
+      const celulaAcoes = row.insertCell();
+
+      const botaoEditar = document.createElement("ion-icon");
+      botaoEditar.name = "create-sharp";
+      botaoEditar.addEventListener("click", () => mostrarFormVeiculoEdicao(v.id));
+      celulaAcoes.appendChild(botaoEditar);
+
+      const botaoDeletar = document.createElement("ion-icon");
+      botaoDeletar.name = "trash-sharp";
+      botaoDeletar.addEventListener("click", () => deletarVeiculo(v.id));
+      celulaAcoes.appendChild(botaoDeletar);
+    });
   });
 }
 
@@ -467,16 +477,28 @@ function definirAtualizacaoHorario() {
   }
 }
 
+function adicionarEventListeners() {
+  document.querySelector(".overlay").addEventListener("click", esconderOverlay);
+  document.querySelectorAll(".overlay div").forEach(e => e.addEventListener("click", e => e.stopPropagation()));
+  document.querySelector("#botao-preco").addEventListener('click', mostrarOverlayPrecos);
+  document.querySelector("#botao-entrada").addEventListener("click", mostrarFormVeiculoEntrada);
+  document.querySelector("#botao-saida").addEventListener("click", mostrarFormVeiculoSaida);
+  document.querySelector("#botao-novo-preco").addEventListener("click", mostrarFormPrecoNovo);
+  document.querySelector("#form-preco").addEventListener("submit", precoFormSubmit);
+  document.querySelector("#form-preco #cancelar").addEventListener("click", fecharFormPreco);
+  document.querySelector("#form-veiculo").addEventListener("submit", veiculoFormSubmit);
+  document.querySelector("#form-veiculo #cancelar").addEventListener("click", esconderOverlay);
+
+
+  document.querySelector("#form-veiculo label").addEventListener("click", testPlaca);
+}
+
 function iniciar() {
   definirAtualizacaoHorario();
   receberCarros();
   receberPrecoAtual();
-
-
-  document.querySelector(".overlay").addEventListener("click", esconderOverlay);
-  document.querySelectorAll(".overlay div").forEach(e => e.addEventListener("click", e => e.stopPropagation()));
-
-  receberPrecoTodos()
+  receberPrecoTodos();
+  adicionarEventListeners();
 }
 
 iniciar();
