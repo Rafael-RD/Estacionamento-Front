@@ -9,6 +9,16 @@ export function textoRelogio() {
       ${data.getHours()}:${data.getMinutes().toString().padStart(2, 0)}:${data.getSeconds().toString().padStart(2, 0)}`;
 }
 
+export function horasEntreDatas(dataAtras, dataAFrente) {
+  const difTempoSegundos = Math.floor((dataAFrente.getTime() - dataAtras.getTime()) / 1000);
+
+  return (
+    Math.floor(difTempoSegundos / 3600) + ":" +
+    Math.floor((difTempoSegundos / 60) % 60).toString().padStart(2, 0) + ":" +
+    Math.floor(difTempoSegundos % 60).toString().padStart(2, 0)
+  )
+}
+
 export function formatarDataTabela(data) {
   return (
     data.getDate().toString().padStart(2, 0) + "/" +

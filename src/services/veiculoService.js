@@ -25,16 +25,9 @@ export function receberCarros() {
         }
 
         if (veiculo.dataSaida)
-          difTempoSegundos = Math.floor((veiculo.dataSaida.getTime() - veiculo.dataEntrada.getTime()) / 1000);
-        else {
-          difTempoSegundos = Math.floor((new Date().getTime() - veiculo.dataEntrada.getTime()) / 1000);
-        }
-
-        veiculo.tempo = (
-          Math.floor(difTempoSegundos / 3600) + ":" +
-          Math.floor((difTempoSegundos / 60) % 60).toString().padStart(2, 0) + ":" +
-          Math.floor(difTempoSegundos % 60).toString().padStart(2, 0)
-        );
+          veiculo.tempo = utils.horasEntreDatas(veiculo.dataEntrada, veiculo.dataSaida);
+        else
+          veiculo.tempo = utils.horasEntreDatas(veiculo.dataEntrada, new Date());
 
         return veiculo;
       });
@@ -98,13 +91,7 @@ export async function postSaidaVeiculo(formEl) {
       aPagar: utils.formatarIntParaValorTabela(resp.data.aPagar)
     }
 
-    const difTempoSegundos = Math.floor((veiculoSaida.dataSaida.getTime() - veiculoSaida.dataEntrada.getTime()) / 1000);
-
-    veiculoSaida.tempo = (
-      Math.floor(difTempoSegundos / 3600) + ":" +
-      Math.floor((difTempoSegundos / 60) % 60).toString().padStart(2, 0) + ":" +
-      Math.floor(difTempoSegundos % 60).toString().padStart(2, 0)
-    );
+    veiculoSaida.tempo = utils.horasEntreDatas(veiculoSaida.dataEntrada, veiculoSaida.dataSaida);
 
     const tabelaAPagar = document.querySelector(".pagar-tabela");
     const bodyTabela = tabelaAPagar.querySelector("tbody");
