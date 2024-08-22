@@ -130,7 +130,13 @@ export async function putVeiculo(formEl) {
     placa: formEl.placa.value.toUpperCase(),
     dataEntrada: new Date(formEl.dataEntrada.value + "T" + formEl.horaEntrada.value)
   }
-  if (formEl.dataSaida) form.dataSaida = new Date(formEl.dataSaida.value + "T" + formEl.horaSaida.value);
+  if (formEl.dataSaida) {
+    form.dataSaida = new Date(formEl.dataSaida.value + "T" + formEl.horaSaida.value);
+    if (form.dataEntrada > form.dataSaida) {
+      alert("Saida antes da entrada");
+      return
+    }
+  }
 
   try {
     await axios.put(process.env.API_URL + "/Veiculo/" + form.id, form);
