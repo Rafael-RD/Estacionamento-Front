@@ -77,8 +77,6 @@ export function receberPrecoTodos() {
     if (error.response?.status === 404) alert(error.response.data);
     else console.error(error);
   }
-
-  receberPrecoAtual();
 }
 
 export async function postPreco(form) {
@@ -180,4 +178,5 @@ export async function precoFormSubmit(e) {
   else await putPreco(form);
 
   receberPrecoTodos();
+  receberPrecoAtual();
 }
