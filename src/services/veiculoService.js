@@ -5,7 +5,6 @@ let veiculos = [];
 
 export function adicionarEventListeners() {
   document.querySelector("#botao-entrada").addEventListener("click", mostrarFormVeiculoEntrada);
-  document.querySelector("#botao-saida").addEventListener("click", mostrarFormVeiculoSaida);
   document.querySelector("#form-veiculo").addEventListener("submit", veiculoFormSubmit);
 }
 
@@ -43,6 +42,11 @@ export function receberCarros() {
         const timer = row.insertCell();
         timer.textContent = v.tempo ? v.tempo : "-";
         const celulaAcoes = row.insertCell();
+
+        const botaoEntrada = document.createElement("ion-icon");
+        botaoEntrada.name = "log-out-sharp";
+        botaoEntrada.addEventListener("click", () => mostrarFormVeiculoSaida(v.placa.toUpperCase()));
+        celulaAcoes.appendChild(botaoEntrada);
 
         const botaoEditar = document.createElement("ion-icon");
         botaoEditar.name = "create-sharp";
@@ -178,7 +182,7 @@ export function mostrarFormVeiculoEntrada() {
   ] = utils.formatarDataForm(dataAtual);
 }
 
-export function mostrarFormVeiculoSaida() {
+export function mostrarFormVeiculoSaida(placa) {
   const overlay = document.querySelector(".overlay");
   overlay.classList.remove("escondido");
   const veiculoContainer = document.querySelector(".overlay-veiculo-container");
@@ -196,6 +200,8 @@ export function mostrarFormVeiculoSaida() {
   veiculoForm.horaSaida.disabled = false;
   veiculoForm.dataSaida.required = true;
   veiculoForm.horaSaida.required = true;
+
+  veiculoForm.placa.value = placa;
 
   const dataAtual = (new Date()).toLocaleString();
   // '21/08/2024, 18:23:23'
