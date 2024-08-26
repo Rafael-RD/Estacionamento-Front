@@ -8,7 +8,9 @@
     "url": "git+https://github.com/Rafael-RD/Estacionamento-Front.git"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
