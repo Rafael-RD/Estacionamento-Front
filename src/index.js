@@ -1,3 +1,5 @@
+import "./assets/styles/reset.css";
+import "./assets/styles/style.css";
 import { precoService, veiculoService, utils } from "./services/index.js";
 
 function iniciar() {
