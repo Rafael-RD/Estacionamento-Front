@@ -151,7 +151,12 @@ form label {
   margin: auto;
 }
 
-form input[type='text'] {
+/* form input[type='text'] {
+  grid-column: 2 / span 2;
+  text-transform: uppercase;
+} */
+
+form input:not([type]) {
   grid-column: 2 / span 2;
   text-transform: uppercase;
 }
