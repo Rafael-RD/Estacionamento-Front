@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "webpack",
+    "build:dev": "webpack -c ./webpack.config.dev.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
